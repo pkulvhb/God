@@ -30,3 +30,11 @@
 *.exe
 *.out
 *.app
+
+*.pdb
+/Binaries/Win64/GodEditor.target
+/Saved
+/Intermediate
+/.vs
+*.sln
+*.modules
