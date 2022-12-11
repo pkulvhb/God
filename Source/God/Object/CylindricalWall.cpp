@@ -9,18 +9,18 @@
 
 const float ACylindricalWall::DoubleClickTestPadding = 0.3f;
 
-FString GetTraceStack(int32 nDepth = 15)
-{
-	return "";
-	FString RetStrStackInfo = "Stack Info:";
-	TArray<FProgramCounterSymbolInfo> Stack = FPlatformStackWalk::GetStack(0, 15);
-	for (int i = 0; i < Stack.Num(); i++)
-	{
-		RetStrStackInfo += FString("\r\n\t") + FString::Printf(TEXT("FuncName[%s], FileName[%s], LineNumber[%d]"),
-			ANSI_TO_TCHAR(Stack[i].FunctionName), ANSI_TO_TCHAR(Stack[i].Filename), Stack[i].LineNumber);
-	}
-	return RetStrStackInfo;
-}
+//FString GetTraceStack(int32 nDepth = 15)
+//{
+//	return "";
+//	FString RetStrStackInfo = "Stack Info:";
+//	TArray<FProgramCounterSymbolInfo> Stack = FPlatformStackWalk::GetStack(0, 15);
+//	for (int i = 0; i < Stack.Num(); i++)
+//	{
+//		RetStrStackInfo += FString("\r\n\t") + FString::Printf(TEXT("FuncName[%s], FileName[%s], LineNumber[%d]"),
+//			ANSI_TO_TCHAR(Stack[i].FunctionName), ANSI_TO_TCHAR(Stack[i].Filename), Stack[i].LineNumber);
+//	}
+//	return RetStrStackInfo;
+//}
 
 // Sets default values
 ACylindricalWall::ACylindricalWall()
@@ -29,7 +29,7 @@ ACylindricalWall::ACylindricalWall()
 	PrimaryActorTick.bCanEverTick = true;
 	auto Now = FDateTime::Now();
 	UE_LOG(LogTemp, Warning, TEXT("ACylindricalWall Time:%d %d %d"), Now.GetMinute(), Now.GetSecond(), Now.GetMillisecond());
-	UE_LOG(LogTemp, Warning, TEXT("ACylindricalWall: %s"), *GetTraceStack());
+	//UE_LOG(LogTemp, Warning, TEXT("ACylindricalWall: %s"), *GetTraceStack());
 }
 
 void ACylindricalWall::PostActorCreated()

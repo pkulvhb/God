@@ -18,9 +18,14 @@ public:
 
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason);
 
+	void ScreenShotToImage(const FString& ImagePath, const FVector2D& RangeSize);
+
 	UPROPERTY()
 	class APawnManager* PawnManager;
 
 	UPROPERTY()
 	class ASkillManager* SkillManager;
+
+	//UPROPERTY()
+	//class AScreenShotManager* ScreenShotManager;
 };

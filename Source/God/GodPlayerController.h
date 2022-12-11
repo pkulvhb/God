@@ -30,4 +30,10 @@ public:
 	void FastMoveForward(float Value);
 
 	void LookUp(float AxisValue);
+
+	class UCameraComponent* GetCurCameraComponent();
+
+private:
+	UPROPERTY()
+	class AScreenShotManager* ScreenShotManager;
 };
