@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "GodPlayerController.h"
@@ -14,8 +14,8 @@
 void AGodPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-	bEnableClickEvents = true; //´ò¿ª¼àÌýµã»÷ÊÂ¼þµÄ¿ª¹Ø
-	bEnableMouseOverEvents = true; //´ò¿ª¼àÌýÊó±êÐüÍ£ÊÂ¼þµÄ¿ª¹Ø
+	bEnableClickEvents = true; //æ‰“å¼€ç›‘å¬é¼ æ ‡ç‚¹å‡»äº‹ä»¶çš„å¼€å…³
+	bEnableMouseOverEvents = true; //æ‰“å¼€ç›‘å¬é¼ æ ‡æ‚¬åœäº‹ä»¶çš„å¼€å…³
 
 	ScreenShotManager = GetWorld()->SpawnActor<AScreenShotManager>();
 	if (GetCurCameraComponent())

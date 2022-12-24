@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -24,10 +24,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	UFUNCTION(BlueprintCallable)
-	void ScreenShotToImage(const FString& InImagePath);//½«½ØÆÁ×ª»»ÎªÏàÆ¬
+	void ScreenShotToImage(const FString& InImagePath);//å°†æˆªå±è½¬æ¢ä¸ºç›¸ç‰‡
 	
 	UFUNCTION(BlueprintCallable)
-	void WriteColorToImage(const FString& InImagePath, TArray<FColor>InColor, int32 InWidth, int32 InHight);//½«ÑÕÉ«Êı¾İÌáÈ¡
+	void WriteColorToImage(const FString& InImagePath, TArray<FColor>InColor, int32 InWidth, int32 InHight);//å°†é¢œè‰²æ•°æ®æå–
 
 private:
 	UPROPERTY(Category = Default, VisibleAnywhere)

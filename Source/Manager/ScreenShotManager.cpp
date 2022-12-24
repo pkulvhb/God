@@ -1,14 +1,14 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "God/Manager/ScreenShotManager.h"
+#include "Manager/ScreenShotManager.h"
 #include "Components/SceneCaptureComponent2D.h"
 #include "Engine/TextureRenderTarget2D.h"
-#include "Engine/World.h"//GetWord()·½·¨ËùĞèÒªµÄÍ·ÎÄ¼ş
-#include "TimerManager.h"//¶¨Ê±Æ÷ËùĞèÒªµÄÍ·ÎÄ¼ş
-#include "Modules/ModuleManager.h"//FmoduleÍ·ÎÄ¼ş
+#include "Engine/World.h"//GetWord()æ–¹æ³•æ‰€éœ€è¦çš„å¤´æ–‡ä»¶
+#include "TimerManager.h"//å®šæ—¶å™¨æ‰€éœ€è¦çš„å¤´æ–‡ä»¶
+#include "Modules/ModuleManager.h"//Fmoduleå¤´æ–‡ä»¶
 #include "GameFramework/GameUserSettings.h"
-//ÓëÍ¼Æ¬Ïà¹ØµÄÍ·ÎÄ¼ş
+//ä¸å›¾ç‰‡ç›¸å…³çš„å¤´æ–‡ä»¶
 #include "IImageWrapperModule.h"
 #include "IImageWrapper.h"
 #include "Misc/FileHelper.h"
@@ -20,9 +20,9 @@ AScreenShotManager::AScreenShotManager()
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));// ´´½¨¿É¸½¼ÓÄÚÈİµÄĞéÄâ¸ù×é¼ş¡£
-	CaptureComponent2D = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("CaptureComponent2D"));	// ´´½¨2DÏà»ú
-	CaptureComponent2D->SetupAttachment(RootComponent);//½«CaptureComponent2D°ó¶¨µ½RootComponent×é¼ş
+	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));// åˆ›å»ºå¯é™„åŠ å†…å®¹çš„è™šæ‹Ÿæ ¹ç»„ä»¶ã€‚
+	CaptureComponent2D = CreateDefaultSubobject<USceneCaptureComponent2D>(TEXT("CaptureComponent2D"));	// åˆ›å»º2Dç›¸æœº
+	CaptureComponent2D->SetupAttachment(RootComponent);//å°†CaptureComponent2Dç»‘å®šåˆ°RootComponentç»„ä»¶
 
 	auto RenderTarget2D = NewObject<UTextureRenderTarget2D>(this, TEXT("ScreenShotManager"));
 	RenderTarget2D->ClearColor = FLinearColor::Transparent;
@@ -56,7 +56,7 @@ void AScreenShotManager::ScreenShotToImage(const FString& InImagePath)
 	{
 		auto Lab = [=]()
 		{
-			//»ñÈ¡randerTargetÌùÍ¼×ÊÔ´  ½«ÑÕÉ«ÖµÈ«²¿·ÅÈëFTextureRenderTargetResourceÖĞ
+			//è·å–randerTargetè´´å›¾èµ„æº  å°†é¢œè‰²å€¼å…¨éƒ¨æ”¾å…¥FTextureRenderTargetResourceä¸­
 			auto Resolution = GEngine->GetGameUserSettings()->GetScreenResolution();
 			//UE_LOG(LogTemp, Warning, TEXT("ResolutionXXX: %d %d"), Resolution.X, Resolution.Y);
 			//CaptureComponent2D->TextureTarget->ResizeTarget(Resolution.X, Resolution.Y);
@@ -68,8 +68,8 @@ void AScreenShotManager::ScreenShotToImage(const FString& InImagePath)
 			WriteColorToImage(InImagePath, OutColor, Width, Height);
 		};
 
-		FTimerHandle TimerHandle;//¶¨ÒåÒ»¸ö¶¨Ê±Æ÷
-		//0.001fºóÔÙ½âÎöÍ¼Æ¬Ğ´Èë±¾µØ  ·ÀÖ¹µôÖ¡
+		FTimerHandle TimerHandle;//å®šä¹‰ä¸€ä¸ªå®šæ—¶å™¨
+		//0.001fåå†è§£æå›¾ç‰‡å†™å…¥æœ¬åœ°  é˜²æ­¢æ‰å¸§
 		GetWorld()->GetTimerManager().SetTimer(TimerHandle, Lab, 0.001f, false, 0);
 	}
 }
@@ -81,7 +81,7 @@ void AScreenShotManager::WriteColorToImage(const FString& InImagePath, TArray<FC
     if (Ext == "jpg" || Ext == "jpeg")
     {
         TSharedPtr<IImageWrapper>ImageWrapper = ImageWrapperModule.CreateImageWrapper(EImageFormat::JPEG);
-        //Íù±¾µØĞ´£¬»ñÈ¡ÑÕÉ«Êı¾İ£¬»ñÈ¡³ß´ç£¬»ñÈ¡³¤¶È£¬¸ß¶È£¬¸ñÊ½rgb,8Î»
+        //å¾€æœ¬åœ°å†™ï¼Œè·å–é¢œè‰²æ•°æ®ï¼Œè·å–å°ºå¯¸ï¼Œè·å–é•¿åº¦ï¼Œé«˜åº¦ï¼Œæ ¼å¼rgb,8ä½
         if (ImageWrapper->SetRaw(InColor.GetData(), InColor.GetAllocatedSize(), InWidth, InHight, ERGBFormat::BGRA, 8))
         {
             FFileHelper::SaveArrayToFile(ImageWrapper->GetCompressed(100), *InImagePath);

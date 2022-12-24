@@ -1,8 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+﻿// Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "God/Manager/SkillManager.h"
-#include "God/Data/SkillType.h"
+#include "Manager/SkillManager.h"
+#include "Data/SkillType.h"
 
 // Sets default values
 ASkillManager::ASkillManager()

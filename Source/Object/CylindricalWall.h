@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
@@ -51,16 +51,16 @@ public:
 	virtual void NotifyActorEndOverlap(AActor* OtherActor) override;
 
 private:
-	// ´¥·¢Ë«»÷ÊÂ¼şµÄÊ±¼ä¼ä¸ôµÄÁÙ½çÖµ
+	// è§¦å‘åŒå‡»äº‹ä»¶çš„æ—¶é—´é—´éš”çš„ä¸´ç•Œå€¼
 	static const float DoubleClickTestPadding;
 
-	// ¼ÇÂ¼ÉÏÒ»´ÎµÄµã»÷Ê±¿Ì
+	// è®°å½•ä¸Šä¸€æ¬¡çš„ç‚¹å‡»æ—¶åˆ»
 	UPROPERTY()
-		float LastClickTime = 0;
+	float LastClickTime = 0;
 
-	// ¼ÇÂ¼ÊÇ·ñÔÚË«»÷²âÊÔ½×¶Î
+	// è®°å½•æ˜¯å¦åœ¨åŒå‡»æµ‹è¯•é˜¶æ®µ
 	UPROPERTY()
-		bool bInDoubleClickTest = false;
+	bool bInDoubleClickTest = false;
 
 	FTimerHandle MonitorTimer;
 

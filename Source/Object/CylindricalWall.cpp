@@ -1,9 +1,9 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+ï»¿// Fill out your copyright notice in the Description page of Project Settings.
 
-
+#include "MacroDefine.h"
 #include "CylindricalWall.h"
-#include "God/GodCharacter.h"
-#include "God/GodGameMode.h"
+#include "GodCharacter.h"
+#include "GodGameMode.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
 #include "GenericPlatform/GenericPlatformStackWalk.h"
 
@@ -45,11 +45,11 @@ void ACylindricalWall::BeginPlay()
 	Super::BeginPlay();
 	auto Now = FDateTime::Now();
 	//UE_LOG(LogTemp, Warning, TEXT("BeginPlay Time:%d %d %d"), Now.GetMinute(), Now.GetSecond(), Now.GetMillisecond());
-	//ÑÓ³ÙÖ´ĞĞ£ºÑÓ³Ù2ÃëºóÖ´ĞĞ£¬ÇÒÖ»Ö´ĞĞ1´Î
+	//å»¶è¿Ÿæ‰§è¡Œï¼šå»¶è¿Ÿ2ç§’åæ‰§è¡Œï¼Œä¸”åªæ‰§è¡Œ1æ¬¡
 	//GetWorld()->GetTimerManager().SetTimer(MonitorTimer, this, &ACylindricalWall::MonitorPlayer, 1, false, 2);
-	//Ñ­»·Ö´ĞĞ£ºÏÖÔÚ¾Í¿ªÊ¼Ö´ĞĞ£¬ÇÒÃ¿¸ôInRateÃë¾ÍÖ´ĞĞÒ»´Î
+	//å¾ªç¯æ‰§è¡Œï¼šç°åœ¨å°±å¼€å§‹æ‰§è¡Œï¼Œä¸”æ¯éš”InRateç§’å°±æ‰§è¡Œä¸€æ¬¡
 	//GetWorld()->GetTimerManager().SetTimer(MonitorTimer, this, &ACylindricalWall::MonitorPlayer, 1, true, 0);
-	//ÑÓ³ÙÑ­»·Ö´ĞĞ£ºÑÓ³ÙInFirstDelayÃëºóÖ´ĞĞ£¬ÇÒInFirstDelayÃëÖ®ºóÃ¿¸ôInRateÃë¾ÍÖ´ĞĞÒ»´Î
+	//å»¶è¿Ÿå¾ªç¯æ‰§è¡Œï¼šå»¶è¿ŸInFirstDelayç§’åæ‰§è¡Œï¼Œä¸”InFirstDelayç§’ä¹‹åæ¯éš”InRateç§’å°±æ‰§è¡Œä¸€æ¬¡
 	//GetWorld()->GetTimerManager().SetTimer(MonitorTimer, this, &ACylindricalWall::MonitorPlayer, 1, true, 2);
 }
 
@@ -79,27 +79,27 @@ void ACylindricalWall::MonitorPlayer()
 }
 
 
-void ACylindricalWall::NotifyActorOnClicked(FKey ButtonPressed) 
+void ACylindricalWall::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	Super::NotifyActorOnClicked(ButtonPressed);
 	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Click"));
 
 	double NowTime = FDateTime::Now().GetTimeOfDay().GetTotalSeconds();
 
-	// ÊÇ·ñ´¦ÓÚË«»÷²âÊÔ½×¶Î
+	// æ˜¯å¦å¤„äºåŒå‡»æµ‹è¯•é˜¶æ®µ
 	if (bInDoubleClickTest) {
-		// Èç¹ûÒÑ¾­´¦ÓÚË«»÷²âÊÔ½×¶Î£¬Ôò±È½Ï´Ë¿ÌÓëÉÏÒ»´ÎÊó±êµã»÷Ê±µÄÊ±¼ä¼ä¸ô
+		// å¦‚æœå·²ç»å¤„äºåŒå‡»æµ‹è¯•é˜¶æ®µï¼Œåˆ™æ¯”è¾ƒæ­¤åˆ»ä¸ä¸Šä¸€æ¬¡é¼ æ ‡ç‚¹å‡»æ—¶çš„æ—¶é—´é—´éš”
 		if (NowTime - LastClickTime < DoubleClickTestPadding) {
-			//Èç¹û¼ä¸ô×ã¹»Ğ¡£¬¾Í´¥·¢Ë«»÷ÊÂ¼ş²¢ÍË³öË«»÷²âÊÔ½×¶Î
+			//å¦‚æœé—´éš”è¶³å¤Ÿå°ï¼Œå°±è§¦å‘åŒå‡»äº‹ä»¶å¹¶é€€å‡ºåŒå‡»æµ‹è¯•é˜¶æ®µ
 			OnLeftDoubleClick();
 			bInDoubleClickTest = false;
 		}
 	}
 	else {
-		// Èç¹û²»´¦ÓÚË«»÷²âÊÔ½×¶Î£¬Ôò½øÈëË«»÷²âÊÔ½×¶Î
+		// å¦‚æœä¸å¤„äºåŒå‡»æµ‹è¯•é˜¶æ®µï¼Œåˆ™è¿›å…¥åŒå‡»æµ‹è¯•é˜¶æ®µ
 		bInDoubleClickTest = true;
 	}
-	// Ã¿´ÎÊó±êµã»÷£¬¶¼Òª¼ÇÂ¼µã»÷µÄÊ±¿Ì
+	// æ¯æ¬¡é¼ æ ‡ç‚¹å‡»ï¼Œéƒ½è¦è®°å½•ç‚¹å‡»çš„æ—¶åˆ»
 	LastClickTime = NowTime;
 }
 
@@ -112,7 +112,9 @@ void ACylindricalWall::OnLeftDoubleClick()
 void ACylindricalWall::NotifyActorBeginCursorOver()
 {
 	Super::NotifyActorBeginCursorOver();
+#if TEST_MOUSE_EVENT
 	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Green, TEXT("BeginCursorOver"));
+#endif
 }
 
 void ACylindricalWall::NotifyActorEndCursorOver()
