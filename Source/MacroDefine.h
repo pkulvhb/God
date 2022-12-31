@@ -1,6 +1,10 @@
 ﻿#pragma once
 
-#define TEST_JSON 1
-#define TEST_MOUSE_EVENT 1
-
-
+#define TEST_JSON_PARSE 0
+#define TEST_MOUSE_EVENT 0
+#define TEST_GET_GAMEMODE 1
+#define TEST_TIMER_SET 0
+#define TEST_DATATABLE 0
+#define TEST_BIND_ACTION_AXIS 0
+#define TEST_RESOLUTION 0
+#define TEST_ACTOR_UMG 0

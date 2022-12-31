@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+ï»¿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GodGameMode.h"
 
@@ -10,6 +10,7 @@
 #include "Manager/SkillManager.h"
 #include "Manager/ScreenShotManager.h"
 #include "UObject/ConstructorHelpers.h"
+#include "MacroDefine.h"
 
 AGodGameMode::AGodGameMode()
 {
@@ -27,9 +28,10 @@ void AGodGameMode::BeginPlay()
 	Super::BeginPlay();
 	PawnManager = GetWorld()->SpawnActor<APawnManager>();
 	SkillManager = GetWorld()->SpawnActor<ASkillManager>();
-
+#if TEST_RESOLUTION
 	FIntPoint Resolution = GEngine->GetGameUserSettings()->GetScreenResolution();
-	UE_LOG(LogTemp, Warning, TEXT("Current Resolution: %d %d"), Resolution.X, Resolution.Y); // ÕâÒ»ÐÐÓÃÓÚ´òÓ¡£¬¿ÉÉ¾³ý
+	UE_LOG(LogTemp, Warning, TEXT("Current Resolution: %d %d"), Resolution.X, Resolution.Y);
+#endif
 	//UE_LOG(LogTemp, Warning, TEXT("Resolution: %d %d"), Resolution.X, Resolution.Y);
 	//GEngine->GetGameUserSettings()->SetScreenResolution(FIntPoint(2560, 1200));
 	//UE_LOG(LogTemp, Warning, TEXT("%s LoadComplete"), *MapName);

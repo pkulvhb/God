@@ -1,7 +1,7 @@
 ﻿// Fill out your copyright notice in the Description page of Project Settings.
 
-#include "MacroDefine.h"
 #include "CylindricalWall.h"
+#include "MacroDefine.h"
 #include "GodCharacter.h"
 #include "GodGameMode.h"
 #include "Runtime/Engine/Classes/Kismet/GameplayStatics.h"
@@ -44,18 +44,22 @@ void ACylindricalWall::BeginPlay()
 {
 	Super::BeginPlay();
 	auto Now = FDateTime::Now();
-	//UE_LOG(LogTemp, Warning, TEXT("BeginPlay Time:%d %d %d"), Now.GetMinute(), Now.GetSecond(), Now.GetMillisecond());
+#if TEST_TIMER_SET
+	UE_LOG(LogTemp, Warning, TEXT("BeginPlay Time:%d %d %d"), Now.GetMinute(), Now.GetSecond(), Now.GetMillisecond());
 	//延迟执行：延迟2秒后执行，且只执行1次
 	//GetWorld()->GetTimerManager().SetTimer(MonitorTimer, this, &ACylindricalWall::MonitorPlayer, 1, false, 2);
 	//循环执行：现在就开始执行，且每隔InRate秒就执行一次
 	//GetWorld()->GetTimerManager().SetTimer(MonitorTimer, this, &ACylindricalWall::MonitorPlayer, 1, true, 0);
 	//延迟循环执行：延迟InFirstDelay秒后执行，且InFirstDelay秒之后每隔InRate秒就执行一次
-	//GetWorld()->GetTimerManager().SetTimer(MonitorTimer, this, &ACylindricalWall::MonitorPlayer, 1, true, 2);
+	GetWorld()->GetTimerManager().SetTimer(MonitorTimer, this, &ACylindricalWall::MonitorPlayer, 1, true, 2);
+#endif
 }
 
 void ACylindricalWall::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+#if TEST_TIMER_SET
 	GetWorld()->GetTimerManager().ClearTimer(MonitorTimer);
+#endif
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -69,19 +73,28 @@ void ACylindricalWall::MonitorPlayer()
 {
 	auto Now = FDateTime::Now();
 	UE_LOG(LogTemp, Warning, TEXT("MonitorPlayer Time:%d %d %d"), Now.GetMinute(), Now.GetSecond(), Now.GetMillisecond());
-	//auto Gamemode = Cast<AGodGameMode>(UGameplayStatics::GetGameMode(this));
+#if TEST_GET_GAMEMODE
+	// 获取GameMode
+	auto Gamemode = Cast<AGodGameMode>(UGameplayStatics::GetGameMode(this));
+	APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+#endif
+
+#if TEST_TIMER_SET
+	// 获取玩家角色
 	auto Player = Cast<AGodCharacter>(UGameplayStatics::GetPlayerPawn(GetWorld(), 0));
     if (Player != NULL)
     {
 		bool bNotVisible = (GetSquaredDistanceTo(Player) <= 30000);
 		SetActorHiddenInGame(bNotVisible);
     }
+#endif
 }
 
 
 void ACylindricalWall::NotifyActorOnClicked(FKey ButtonPressed)
 {
 	Super::NotifyActorOnClicked(ButtonPressed);
+#if TEST_MOUSE_EVENT
 	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("Click"));
 
 	double NowTime = FDateTime::Now().GetTimeOfDay().GetTotalSeconds();
@@ -101,6 +114,7 @@ void ACylindricalWall::NotifyActorOnClicked(FKey ButtonPressed)
 	}
 	// 每次鼠标点击，都要记录点击的时刻
 	LastClickTime = NowTime;
+#endif
 }
 
 void ACylindricalWall::OnLeftDoubleClick()
@@ -120,7 +134,9 @@ void ACylindricalWall::NotifyActorBeginCursorOver()
 void ACylindricalWall::NotifyActorEndCursorOver()
 {
 	Super::NotifyActorEndCursorOver();
+#if TEST_MOUSE_EVENT
 	GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Blue, TEXT("EndCursorOver"));
+#endif
 }
 
 void ACylindricalWall::NotifyActorBeginOverlap(AActor* OtherActor)
@@ -129,14 +145,6 @@ void ACylindricalWall::NotifyActorBeginOverlap(AActor* OtherActor)
 	if (Character != nullptr)
 	{
 		SetActorHiddenInGame(true);
-		APlayerController* PC = UGameplayStatics::GetPlayerController(GetWorld(), 0);
-		if (PC)
-		{
-			PC->ClientTravel("/Game/StarterContent/Maps/StarterMap.StarterMap", TRAVEL_Absolute);
-			//UGameplayStatics::OpenLevel(GetWorld(), FName("/Game/StarterContent/Maps/StarterMap.StarterMap"), true);
-			//Character->SetActorLocation(FVector(100, 0, 0));
-		}
-		
 	}
 }
 

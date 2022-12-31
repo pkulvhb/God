@@ -1,9 +1,10 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "MacroDefine.h"
 #include "GodCharacter.generated.h"
 
 UCLASS(config=Game)
@@ -18,8 +19,15 @@ class AGodCharacter : public ACharacter
 	/** Follow camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
 	class UCameraComponent* FollowCamera;
+
+	// Show the information on the character's head
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Info, meta = (AllowPrivateAccess = "true"))
+	class UWidgetComponent* InfoWidgetComponent;
+
 public:
 	AGodCharacter();
+
+	virtual void BeginPlay() override;
 
 	/** Base turn rate, in deg/sec. Other scaling may affect final turn rate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category=Input)
@@ -56,10 +64,24 @@ protected:
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 	// End of APawn interface
 
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	float TotalLife;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = Info)
+	float CurLife;
+
 public:
 	/** Returns CameraBoom subobject **/
 	FORCEINLINE class USpringArmComponent* GetCameraBoom() const { return CameraBoom; }
 	/** Returns FollowCamera subobject **/
 	FORCEINLINE class UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+
+private:
+#if TEST_ACTOR_UMG
+	void FireBloodSkill();
+
+	void RefreshHeadInfo();
+#endif
 };
 

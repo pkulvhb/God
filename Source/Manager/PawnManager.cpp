@@ -1,7 +1,8 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+Ôªø// Fill out your copyright notice in the Description page of Project Settings.
 
 
 #include "PawnManager.h"
+#include "MacroDefine.h"
 
 // Sets default values
 APawnManager::APawnManager()
@@ -15,8 +16,10 @@ APawnManager::APawnManager()
 void APawnManager::BeginPlay()
 {
 	Super::BeginPlay();
+#if TEST_JSON_PARSE
 	FString FileName = "data/pawns.json";
-	//InitDataFromJsonFile(FileName);
+	InitDataFromJsonFile(FileName);
+#endif
 }
 
 // Called every frame
@@ -39,7 +42,7 @@ bool APawnManager::InitDataFromJsonFile(const FString& ContentPath)
 	if (FFileHelper::LoadFileToString(FileStr, *(AbsPath)))
 	{
 
-		// ºÚΩ‡µƒ µœ÷∑Ω∑®
+		// ÁÆÄÊ¥ÅÁöÑÂÆûÁé∞ÊñπÊ≥ï
 		{
 			FPawnDataArray ArrayData;
 			if (!FJsonObjectConverter::JsonObjectStringToUStruct(FileStr, &ArrayData, 0, 0))

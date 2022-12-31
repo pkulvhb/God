@@ -1,9 +1,11 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GodCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "Components/InputComponent.h"
+#include "Components/WidgetComponent.h"
+#include "Components/ProgressBar.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GameFramework/Controller.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -18,6 +20,8 @@ AGodCharacter::AGodCharacter()
 
 	// set our turn rate for input
 	TurnRateGamepad = 50.f;
+	TotalLife = 120;
+	CurLife = 120;
 
 	// Don't rotate when the controller rotates. Let that just affect the camera.
 	bUseControllerRotationPitch = false;
@@ -47,8 +51,27 @@ AGodCharacter::AGodCharacter()
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName); // Attach the camera to the end of the boom and let the boom adjust to match the controller orientation
 	FollowCamera->bUsePawnControlRotation = false; // Camera does not rotate relative to arm
 
+#if TEST_ACTOR_UMG
+	InfoWidgetComponent = CreateDefaultSubobject<UWidgetComponent>(TEXT("InfoWidgetComponent"));
+	InfoWidgetComponent->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+#endif
 	// Note: The skeletal mesh and anim blueprint references on the Mesh component (inherited from Character) 
 	// are set in the derived blueprint asset named ThirdPersonCharacter (to avoid direct content references in C++)
+}
+
+void AGodCharacter::BeginPlay()
+{
+	Super::BeginPlay();
+#if TEST_ACTOR_UMG
+	auto InfoWidegetClass = LoadClass<UUserWidget>(NULL, TEXT("WidgetBlueprint'/Game/God/UI/UI_HeadInfo.UI_HeadInfo_C'"));
+	InfoWidgetComponent->SetWidgetClass(InfoWidegetClass);
+	InfoWidgetComponent->SetWidgetSpace(EWidgetSpace::Screen);
+	InfoWidgetComponent->SetPivot(FVector2D(1, 0.5));
+	InfoWidgetComponent->SetDrawSize(FVector2D(120.0f, 10.0f));
+	InfoWidgetComponent->SetRelativeLocation(FVector(0.0f, 0.0f, 95.0f));
+
+	RefreshHeadInfo();
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -71,6 +94,10 @@ void AGodCharacter::SetupPlayerInputComponent(class UInputComponent* PlayerInput
 	PlayerInputComponent->BindAxis("Turn Right / Left Gamepad", this, &AGodCharacter::TurnAtRate);
 	PlayerInputComponent->BindAxis("Look Up / Down Mouse", this, &APawn::AddControllerPitchInput);
 	PlayerInputComponent->BindAxis("Look Up / Down Gamepad", this, &AGodCharacter::LookUpAtRate);
+
+#if TEST_ACTOR_UMG
+	PlayerInputComponent->BindAction("BloodSkill", IE_Released, this, &AGodCharacter::FireBloodSkill);
+#endif
 
 	// handle touch devices
 	PlayerInputComponent->BindTouch(IE_Pressed, this, &AGodCharacter::TouchStarted);
@@ -127,3 +154,24 @@ void AGodCharacter::MoveRight(float Value)
 		AddMovementInput(Direction, Value);
 	}
 }
+
+#if TEST_ACTOR_UMG
+void AGodCharacter::RefreshHeadInfo()
+{
+	UUserWidget* InfoWidget = InfoWidgetComponent->GetUserWidgetObject();
+	if (InfoWidget) {
+		auto ProgressBar = Cast<UProgressBar>(InfoWidget->GetWidgetFromName(TEXT("PB_Life")));
+		if (ProgressBar)
+			ProgressBar->SetPercent(CurLife / TotalLife);
+	}
+}
+
+void AGodCharacter::FireBloodSkill()
+{
+	if (CurLife >= 20)
+		CurLife -= 10;
+	else
+		GEngine->AddOnScreenDebugMessage(-1, 3.0f, FColor::Red, TEXT("FireBloodSkill fail, life is low!"));
+	RefreshHeadInfo();
+}
+#endif

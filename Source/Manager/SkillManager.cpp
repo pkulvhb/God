@@ -3,6 +3,7 @@
 
 #include "Manager/SkillManager.h"
 #include "Data/SkillType.h"
+#include "MacroDefine.h"
 
 // Sets default values
 ASkillManager::ASkillManager()
@@ -16,7 +17,7 @@ ASkillManager::ASkillManager()
 void ASkillManager::BeginPlay()
 {
 	Super::BeginPlay();
-
+#if TEST_DATATABLE
 	UDataTable* SkillTypeTable = LoadObject<UDataTable>(NULL, TEXT("DataTable'/Game/Data/SkillTypeTable.SkillTypeTable'"));
 	if (!SkillTypeTable)
 	{
@@ -49,6 +50,7 @@ void ASkillManager::BeginPlay()
 		FSkillType* SkillType = SkillTypeTable->FindRow<FSkillType>(RowName, TEXT("IconReference"));
 		UE_LOG(LogTemp, Warning, TEXT("SkillType: %d %s %d"), SkillType->ID, *SkillType->Name.ToString(), SkillType->Type);
 	}
+#endif
 }
 
 // Called every frame

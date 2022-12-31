@@ -4,6 +4,7 @@
 #include "GodPlayerController.h"
 #include "GodCharacter.h"
 #include "Manager/ScreenShotManager.h"
+#include "MacroDefine.h"
    
 #include "GameFramework/GameUserSettings.h"
 #include "Kismet/GameplayStatics.h"
@@ -28,8 +29,10 @@ void AGodPlayerController::SetupInputComponent()
 	check(InputComponent);
 
 	InputComponent->BindAction(TEXT("ScreenShot"), EInputEvent::IE_Released, this, &AGodPlayerController::ScreenShot);
+#if TEST_BIND_ACTION_AXIS
 	InputComponent->BindAxis(TEXT("Look Up / Down Mouse"), this, &AGodPlayerController::LookUp);
-	InputComponent->BindAxis(TEXT("Fast Move  Forward / Backward"), this, &AGodPlayerController::FastMoveForward);;
+	InputComponent->BindAxis(TEXT("Fast Move  Forward / Backward"), this, &AGodPlayerController::FastMoveForward);
+#endif
 }
 
 // Called every frame
